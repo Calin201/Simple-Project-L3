@@ -72,3 +72,14 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+#coolstuff {
+    background-color: burlywood;
+    padding: 67px;
+    margin-top: 67px;
+    border-radius: 67px;
+}
+
+#coolstuff p {
+    color: #666;
+}
