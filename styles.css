@@ -81,3 +81,25 @@ footer {
 #despre h2 {
     color: #333;
 }
+/* ...existing code ... */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 48px;
+    width: auto;
+    display: block;
+}
+
+/* ...existing code ... */
