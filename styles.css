@@ -72,3 +72,26 @@ footer {
     bottom: 0;
     width: 100%;
 }
+#galerie {
+  padding: 2rem 1rem;
+}
+
+#galerie .grid-galerie {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+#galerie img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  display: block;
+}
+
+/* Responsive: o singură coloană sub 600px */
+@media (max-width: 600px) {
+  #galerie .grid-galerie {
+    grid-template-columns: 1fr;
+  }
+}
