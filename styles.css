@@ -72,3 +72,12 @@ footer {
     bottom: 0;
     width: 100%;
 }
+#despre {
+    background-color :azure;
+    padding : 20px;
+    margin-top: 20px;
+    border-radius:8px;
+}
+#despre h2{
+    color:rgb(226, 66, 66)
+}
