@@ -72,3 +72,50 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+/* ----- Despre (secțiune nouă) ----- */
+#despre {
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+}
+
+#despre h3 {
+    color: #35424a;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.despre-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+
+#despre ul {
+    padding-left: 1.25rem;
+    line-height: 1.7;
+}
+
+.despre-chips {
+    margin-top: 1rem;
+}
+
+.chip {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid #d9e2ec;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: #f7fafc;
+}
+
+/* Responsive: o coloană pe ecrane mici */
+@media (max-width: 600px) {
+    .despre-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
