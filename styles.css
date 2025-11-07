@@ -72,3 +72,14 @@ footer {
     bottom: 0;
     width: 100%;
 }
+#despre {
+    background-color: #007bff;
+    text-align: center;
+    padding: 20px;
+}
+
+#despre img {
+    max-width: 100%;
+    height: auto;
+}
+
