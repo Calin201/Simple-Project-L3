@@ -1,74 +1,114 @@
-/* Reset default margins and padding */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ---------- pastel theme ---------- */
+:root{
+  --bg: #fff9fc;          /* soft blush */
+  --card: #fff;           /* white cards */
+  --ink: #4b3f46;         /* muted cocoa text */
+  --muted: #6f6068;
+  --accent: #e9b8d0;      /* pale rose */
+  --accent-2: #c9b6ff;    /* lilac */
+  --ring: #f3d9e5;
 }
 
-body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--ink);
+  background:
+    radial-gradient(60rem 60rem at -10% -10%, #ffeef7 0%, transparent 55%),
+    radial-gradient(60rem 60rem at 110% 10%, #f1edff 0%, transparent 55%),
+    var(--bg);
+  line-height: 1.65;
+  letter-spacing: .1px;
+  padding: 28px 18px 80px;
 }
 
-header {
-    background: #35424a;
-    color: white;
-    padding: 1rem 0;
-    text-align: center;
+/* container feel without forcing HTML changes */
+main{
+  max-width: 860px;
+  margin: 0 auto;
 }
 
-header h1 {
-    margin-bottom: 1rem;
+/* headings */
+h1{
+  margin: 0 0 16px;
+  font-size: clamp(28px, 4vw, 40px);
+  color: var(--ink);
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+h2{
+  margin: 0 0 10px;
+  font-size: 22px;
+  color: var(--muted);
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    padding: 1rem 0;
+/* top links list (your Home / About / Contact) */
+body > ul{
+  list-style: none;
+  padding: 0;
+  margin: 4px auto 20px;
+  max-width: 860px;
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+body > ul li a{
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff, #fff) padding-box,
+              linear-gradient(120deg, var(--accent), var(--accent-2)) border-box;
+  border: 1.5px solid transparent;
+  text-decoration: none;
+  color: var(--ink);
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  transition: transform .15s ease, box-shadow .15s ease, background .3s ease;
+}
+body > ul li a:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.08);
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+/* card sections */
+section{
+  background: var(--card);
+  border: 1px solid var(--ring);
+  border-radius: 18px;
+  padding: 20px 22px;
+  margin: 18px 0;
+  box-shadow: 0 10px 30px rgba(173, 134, 158, .12);
 }
 
-nav a:hover {
-    background-color: #e8491d;
+/* specific: Despre Mine card gets a subtle tint */
+#despre{
+  background:
+    linear-gradient(0deg, rgba(233,184,208,.12), rgba(233,184,208,.12)),
+    var(--card);
+  border-color: #f1cfe0;
+}
+#despre h2{ color:#5c4a54; }
+
+p{ margin: 8px 0; }
+
+/* prettier bullets */
+ul li{
+  margin: 6px 0;
+}
+ul{ padding-left: 1.2rem; }
+ul li::marker{
+  color: #c79fc3;
 }
 
-main {
-    max-width: 1100px;
-    margin: 2rem auto;
-    padding: 0 2rem;
+/* links */
+a{ color:#7b5aa6; text-decoration: none; border-bottom: 1px dashed #d9ccff; }
+a:hover{ border-bottom-style: solid; }
+
+/* footer (demure, unobtrusive) */
+footer{
+  position: fixed; inset-inline: 0; bottom: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #6d5f66;
+  mix-blend-mode: multiply;
 }
 
-section {
-    background: white;
-    margin: 1rem 0;
-    padding: 2rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-h2 {
-    color: #35424a;
-    margin-bottom: 1rem;
-}
-
-footer {
-    text-align: center;
-    padding: 1rem 0;
-    background: #35424a;
-    color: white;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
