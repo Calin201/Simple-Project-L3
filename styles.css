@@ -13,7 +13,7 @@ body {
 }
 
 header {
-    background: #35424a;
+    background: #4a3546;
     color: white;
     padding: 1rem 0;
     text-align: center;
@@ -41,7 +41,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #e8491d;
+    background-color: #1da8e8;
 }
 
 main {
@@ -59,14 +59,14 @@ section {
 }
 
 h2 {
-    color: #35424a;
+    color: #4a3546;
     margin-bottom: 1rem;
 }
 
 footer {
     text-align: center;
     padding: 1rem 0;
-    background: #35424a;
+    background: #4a3546;
     color: white;
     position: fixed;
     bottom: 0;
