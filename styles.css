@@ -12,17 +12,26 @@ body {
     color: #333;
     background-color: #f4f4f4; /* Light background to separate content */
 }
-
-/* Header Styling */
 header {
     background: #35424a;
     color: white;
-    padding: 1rem 0;
-    text-align: center; /* Centers header content (H1 and Nav) */
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 header h1 {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
+}
+
+/* Navigation Bar Layout */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    padding: 0;
+    margin: 0;
 }
 
 /* Navigation Bar Layout (Flexbox for centering links) */
