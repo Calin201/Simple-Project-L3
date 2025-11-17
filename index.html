@@ -24,6 +24,54 @@
             <p>This is a simple webpage created with HTML and CSS.</p>
         </section>
 
+        <section id="weather-apps" class="weather-container">
+            <h2>🌦 Open-Meteo Weather Applications</h2>
+            <div class="weather-app-box">
+                <h3>📍 Current Weather</h3>
+                <div class="input-group">
+                    <input type="text" id="city-current" placeholder="City name (e.g.,Bucharest, London)" value="Bucharest">
+                    <button onclick="getCurrentWeather()">Get Weather</button>
+                </div>
+                <div id="current-weather-result" class="result-box"></div>
+            </div>
+            <div class="weather-app-box">
+                <h3>📅 7-Day Forecast</h3>
+                <div class="input-group">
+                    <input type="text" id="city-forecast" placeholder="City name (e.g.,Bucharest, London)" value="Bucharest">
+                    <button onclick="getWeekForecast()">Get Forecast</button>
+                </div>
+                <div id="forecast-result" class="result-box"></div>
+            </div>
+            <div class="weather-app-box">
+                <h3>🌡 Hourly Temperature (Next 24h)</h3>
+                <div class="input-group">
+                    <input type="text" id="city-hourly" placeholder="City name (e.g.,Bucharest, London)" value="Bucharest">
+                    <button onclick="getHourlyTemperature()">Get Hourly Data</button>
+                </div>
+                <div id="hourly-result" class="result-box"></div>
+            </div>
+            <div class="weather-app-box">
+                <h3>💨 Air Quality Index</h3>
+                <div class="input-group">
+                    <input type="text" id="city-air" placeholder="City name (e.g., Bucharest,London)" value="Bucharest">
+                    <button onclick="getAirQuality()">Check Air Quality</button>
+                </div>
+                <div id="air-quality-result" class="result-box"></div>
+            </div>
+        </section>
+
+        <section id="httpCatSection" style="text-align: center; margin-top: 50px;">
+            <h2>View HTTP Status Code Cat Images</h2>
+            <p>Enter an HTTP Status Code (e.g., 404, 500, etc.) and click the button below to view the cat image!</p>
+
+            <!-- Input for status code -->
+            <input type="text" id="statusCode" placeholder="Enter status code" />
+            <button onclick="fetchCatImage()">Get Cat Image</button>
+
+            <!-- Image container for displaying cat image -->
+            <div id="catImageContainer" style="margin-top: 20px;"></div>
+        </section>
+
         <section id="about">
             <h2>About</h2>
             <p>Learn more about what we do.</p>
@@ -38,5 +86,172 @@
     <footer>
         <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
     </footer>
+    <script>
+        async function getCoordinates(cityName) {
+
+            const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`);
+            const data = await response.json();
+            if (!data.results || data.results.length === 0) {
+                throw new Error('City not found. Please check the spelling.');
+            }
+            return {
+                lat: data.results[0].latitude,
+                lon: data.results[0].longitude,
+                name: data.results[0].name,
+                country: data.results[0].country,
+                admin1: data.results[0].admin1
+            };
+        }
+        const weatherCodes = {
+            0: '☀ Clear sky', 1: '🌤 Mainly clear', 2: '⛅ Partly cloudy', 3: '☁ Overcast',
+            45: '🌫 Foggy', 48: '🌫 Depositing rime fog', 51: '🌦 Light drizzle',53: '🌦 Moderate drizzle', 55: '🌦 Dense drizzle', 61: '🌧 Slight rain',63: '🌧 Moderate rain', 65: '🌧 Heavy rain', 71: '🌨 Slight snow',
+            73: '🌨 Moderate snow', 75: '🌨 Heavy snow', 77: '❄ Snow grains',
+            80: '🌦 Slight rain showers', 81: '🌦 Moderate rain showers',
+            82: '🌦 Violent rain showers', 85: '🌨 Slight snow showers',
+            86: '🌨 Heavy snow showers', 95: '⛈ Thunderstorm',
+            96: '⛈ Thunderstorm with slight hail', 99: '⛈ Thunderstorm with heavy hail'
+        };
+        async function getCurrentWeather() {
+            // 1. Găsește elementele din DOM
+            const cityName = document.getElementById('city-current').value;
+            const resultDiv = document.getElementById('current-weather-result');
+            // 2. Arată un mesaj de încărcare
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+            try {
+                // 3. Preluare coordonate
+                const location = await getCoordinates(cityName);
+                // 4. Preluare date meteo
+
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&timezone=auto`);
+                const data = await response.json();
+                const weather = data.current_weather;
+                // 5. Construiește HTML-ul și injectează-l în DOM
+                resultDiv.innerHTML = `
+                    <div class="weather-data">
+                        <p><strong>📍 Location:</strong> ${location.name},${location.country}</p>
+                        <p><strong>🌡 Temperature:</strong> ${weather.temperature}°C</p>
+                        <p><strong>💨 Wind Speed:</strong> ${weather.windspeed}km/h</p>
+                        <p><strong>🧭 Wind Direction:</strong> ${weather.winddirection}°</p>
+                        <p><strong>🌤 Condition:</strong> ${weatherCodes[weather.weathercode] || 'Unknown'}</p>
+                        <p><strong>🕐 Time:</strong> ${weather.time}</p>
+                    </div>
+                `;
+            } catch (error) {
+                // 6. Gestionare erori
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+        async function getWeekForecast() {
+            const cityName = document.getElementById('city-forecast').value;
+            const resultDiv = document.getElementById('forecast-result');
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+            try {
+                const location = await getCoordinates(cityName);
+
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto`);
+                const data = await response.json();
+                let forecastHTML = `<p style="text-align: center; margin-bottom:1rem;"><strong>📍 ${location.name}, ${location.country}</strong></p>`;
+                forecastHTML += '<div class="forecast-grid">';
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const dayName = date.toLocaleDateString('en-US', {weekday:'short'});
+                    forecastHTML += `
+                        <div class="forecast-day">
+                            <p><strong>${dayName}</strong></p>
+                            <p>${date.toLocaleDateString()}</p>
+                            <p>🌡 ${data.daily.temperature_2m_max[i]}°C /${data.daily.temperature_2m_min[i]}°C</p>
+                            <p>💧 ${data.daily.precipitation_sum[i]} mm</p>
+                        </div>
+                    `;
+                }
+                forecastHTML += '</div>';
+                resultDiv.innerHTML = forecastHTML;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error:${error.message}</p>`;
+            }
+        }
+        async function getHourlyTemperature() {
+            const cityName = document.getElementById('city-hourly').value;
+            const resultDiv = document.getElementById('hourly-result');
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+            try {
+                const location = await getCoordinates(cityName);
+
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&hourly=temperature_2m,relative_humidity_2m,precipitation&timezone=auto&forecast_days=1`);
+                const data = await response.json();
+                let hourlyHTML = `<p style="text-align: center; margin-bottom:1rem;"><strong>📍 ${location.name}, ${location.country}</strong></p>`;
+                hourlyHTML += '<div class="hourly-grid">';
+                for (let i = 0; i < 24; i++) {
+                    const time = new Date(data.hourly.time[i]);
+                    const hour = time.getHours();
+                    hourlyHTML += `
+                        <div class="hourly-item">
+                            <p><strong>${hour}:00</strong></p>
+                            <p>🌡 ${data.hourly.temperature_2m[i]}°C</p>
+                            <p>💧 ${data.hourly.relative_humidity_2m[i]}%</p>
+                            <p>🌧 ${data.hourly.precipitation[i]} mm</p>
+                        </div>
+                    `;
+                }
+                hourlyHTML += '</div>';
+                resultDiv.innerHTML = hourlyHTML;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error:${error.message}</p>`;
+            }
+        }
+        async function getAirQuality() {
+            const cityName = document.getElementById('city-air').value;
+            const resultDiv = document.getElementById('air-quality-result');
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+            try {
+                const location = await getCoordinates(cityName);
+
+                const response = await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${location.lat}&longitude=${location.lon}&current=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,european_aqi&timezone=auto`);
+                const data = await response.json();
+                const current = data.current;
+                const aqiLevels = {
+                    1: '✅ Good', 2: '🟢 Fair', 3: '🟡 Moderate',
+                    4: '🟠 Poor', 5: '🔴 Very Poor'
+                };
+                resultDiv.innerHTML = `
+                    <div class="weather-data">
+                        <p><strong>📍 Location:</strong> ${location.name},${location.country}</p>
+                        <p><strong>European AQI:</strong>${aqiLevels[current.european_aqi] || current.european_aqi}</p>
+                        <p><strong>PM10:</strong> ${current.pm10} μg/m3</p>
+                        <p><strong>PM2.5:</strong> ${current.pm2_5} μg/m3</p>
+                        <p><strong>CO:</strong> ${current.carbon_monoxide}μg/m3</p>
+                        <p><strong>NO2:</strong> ${current.nitrogen_dioxide}μg/m3</p>
+                        <p><strong>SO2:</strong> ${current.sulphur_dioxide}μg/m3</p>
+                        <p><strong>O3:</strong> ${current.ozone} μg/m3</p></div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class"error">❌ Error:${error.message}</p>`;
+            }
+        }
+        function fetchCatImage() {
+            const statusCode = document.getElementById('statusCode').value.trim();
+            const catImageContainer = document.getElementById('catImageContainer');
+
+            // Validate the status code
+            if (!statusCode || isNaN(statusCode) || statusCode < 100 || statusCode > 599) {
+                catImageContainer.innerHTML = "<p>Please enter a valid HTTP status code between 100 and 599.</p>";
+                return;
+            }
+
+            // Construct the URL for the cat image
+            const imageUrl = `https://http.cat/${statusCode}`;
+
+            // Create and insert the image element
+            const imgElement = document.createElement('img');
+            imgElement.src = imageUrl;
+            imgElement.alt = `HTTP Status ${statusCode} Cat`;
+            imgElement.style.maxWidth = "100%";
+            imgElement.style.height = "auto";
+
+            // Clear any previous content in the image container
+            catImageContainer.innerHTML = '';
+            catImageContainer.appendChild(imgElement);
+        }
+    </script>
 </body>
 </html>
