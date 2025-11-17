@@ -60,6 +60,18 @@
             </div>
         </section>
 
+        <section id="httpCatSection" style="text-align: center; margin-top: 50px;">
+            <h2>View HTTP Status Code Cat Images</h2>
+            <p>Enter an HTTP Status Code (e.g., 404, 500, etc.) and click the button below to view the cat image!</p>
+
+            <!-- Input for status code -->
+            <input type="text" id="statusCode" placeholder="Enter status code" />
+            <button onclick="fetchCatImage()">Get Cat Image</button>
+
+            <!-- Image container for displaying cat image -->
+            <div id="catImageContainer" style="margin-top: 20px;"></div>
+        </section>
+
         <section id="about">
             <h2>About</h2>
             <p>Learn more about what we do.</p>
@@ -215,6 +227,30 @@
             } catch (error) {
                 resultDiv.innerHTML = `<p class"error">❌ Error:${error.message}</p>`;
             }
+        }
+        function fetchCatImage() {
+            const statusCode = document.getElementById('statusCode').value.trim();
+            const catImageContainer = document.getElementById('catImageContainer');
+
+            // Validate the status code
+            if (!statusCode || isNaN(statusCode) || statusCode < 100 || statusCode > 599) {
+                catImageContainer.innerHTML = "<p>Please enter a valid HTTP status code between 100 and 599.</p>";
+                return;
+            }
+
+            // Construct the URL for the cat image
+            const imageUrl = `https://http.cat/${statusCode}`;
+
+            // Create and insert the image element
+            const imgElement = document.createElement('img');
+            imgElement.src = imageUrl;
+            imgElement.alt = `HTTP Status ${statusCode} Cat`;
+            imgElement.style.maxWidth = "100%";
+            imgElement.style.height = "auto";
+
+            // Clear any previous content in the image container
+            catImageContainer.innerHTML = '';
+            catImageContainer.appendChild(imgElement);
         }
     </script>
 </body>
