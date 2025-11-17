@@ -40,6 +40,29 @@
                 <button onclick="getRandomCat()">Get Random Cat</button>
                 <div id="random-cat-result" class="result-box"></div>
             </div>
+            <section id="dog-api" class="dog-container">
+            <h2>🐕 Dog API</h2>
+            <div class="dog-box">
+                <h3>Random Dog Image</h3>
+                <button onclick="getRandomDog()">Get Random Dog</button>
+                <div id="random-dog-result" class="result-box"></div>
+            </div>
+
+            <div class="dog-box">
+                <h3>Dog by Breed</h3>
+                <div class="input-group">
+                    <input type="text" id="dog-breed" placeholder="Enter breed (e.g., labrador, bulldog)" value="labrador">
+                    <button onclick="getDogByBreed()">Get Dog</button>
+                </div>
+                <div id="dog-breed-result" class="result-box"></div>
+            </div>
+
+            <div class="dog-box">
+                <h3>All Dog Breeds</h3>
+                <button onclick="getAllBreeds()">Load All Breeds</button>
+                <div id="all-breeds-result" class="result-box"></div>
+            </div>
+        </section>
         </section>
         <h2>🌦️ Open-Meteo Weather Applications</h2>
             
@@ -290,6 +313,98 @@
                 `;
             } catch (error) {
                 resultDiv.innerHTML = `<p class"error">❌ Error: ${error.message}</p>`;
+            }
+        }
+        async function getRandomDog() {
+            const resultDiv = document.getElementById('random-dog-result');
+            resultDiv.innerHTML = '<p class="loading">Loading random dog...</p>';
+            
+            try {
+                const response = await fetch('https://api.api-ninjas.com/v1/dogs?limit=1');
+                if (!response.ok) throw new Error('Failed to fetch dog data');
+                
+                const data = await response.json();
+                if (data.length === 0) throw new Error('No dog data found');
+                
+                const dog = data[0];
+                resultDiv.innerHTML = `
+                    <div class="dog-data">
+                        <p><strong>Breed:</strong> ${dog.name}</p>
+                        <p><strong>Temperament:</strong> ${dog.temperament}</p>
+                        <p><strong>Life Span:</strong> ${dog.life_span}</p>
+                        <p><strong>Origin:</strong> ${dog.origin || 'Unknown'}</p>
+                        <p><strong>Purpose:</strong> ${dog.purpose || 'Unknown'}</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        async function getDogByBreed() {
+            const breed = document.getElementById('dog-breed').value.trim();
+            const resultDiv = document.getElementById('dog-breed-result');
+            
+            if (!breed) {
+                resultDiv.innerHTML = '<p class="error">❌ Please enter a breed name</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p class="loading">Loading dog breed...</p>';
+            
+            try {
+                const response = await fetch(`https://api.api-ninjas.com/v1/dogs?name=${encodeURIComponent(breed)}`);
+                if (!response.ok) throw new Error('Failed to fetch dog data');
+                
+                const data = await response.json();
+                if (data.length === 0) throw new Error('Breed not found. Please check the spelling.');
+                
+                const dog = data[0];
+                resultDiv.innerHTML = `
+                    <div class="dog-data">
+                        <p><strong>🐕 Breed:</strong> ${dog.name}</p>
+                        <p><strong>🎭 Temperament:</strong> ${dog.temperament}</p>
+                        <p><strong>📏 Height:</strong> ${dog.height || 'Unknown'}</p>
+                        <p><strong>⚖️ Weight:</strong> ${dog.weight || 'Unknown'}</p>
+                        <p><strong>🕐 Life Span:</strong> ${dog.life_span}</p>
+                        <p><strong>🌍 Origin:</strong> ${dog.origin || 'Unknown'}</p>
+                        <p><strong>🎯 Purpose:</strong> ${dog.purpose || 'Unknown'}</p>
+                        <p><strong>📚 Colour:</strong> ${dog.colors || 'Unknown'}</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        async function getAllBreeds() {
+            const resultDiv = document.getElementById('all-breeds-result');
+            resultDiv.innerHTML = '<p class="loading">Loading all breeds...</p>';
+            
+            try {
+                const response = await fetch('https://api.api-ninjas.com/v1/dogs?limit=100');
+                if (!response.ok) throw new Error('Failed to fetch dog data');
+                
+                const data = await response.json();
+                if (data.length === 0) throw new Error('No breeds found');
+                
+                let breedsHTML = `<p style="text-align: center; margin-bottom: 1rem;"><strong>Total Breeds: ${data.length}</strong></p>`;
+                breedsHTML += '<div class="breeds-grid">';
+                
+                data.forEach(dog => {
+                    breedsHTML += `
+                        <div class="breed-card">
+                            <p><strong>${dog.name}</strong></p>
+                            <p>🎭 ${dog.temperament.substring(0, 50)}...</p>
+                            <p>🕐 ${dog.life_span}</p>
+                        </div>
+                    `;
+                });
+                
+                breedsHTML += '</div>';
+                resultDiv.innerHTML = breedsHTML;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
             }
         }
 
