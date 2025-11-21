@@ -260,3 +260,12 @@ footer {
 		grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 	}
 }
+#despre {
+    background-color: #655d5d;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+#despre h2 {
+    color: #333;
+}
