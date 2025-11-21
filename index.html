@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Simple Webpage</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header>
         <h1>Welcome to My Page</h1>
@@ -24,6 +26,54 @@
             <p>This is a simple webpage created with HTML and CSS.</p>
         </section>
 
+        <section id="weather-apps" class="weather-container">
+            <h2>Open-Meteo Weather Applications</h2>
+
+            <div class="weather-app-box">
+                <h3>Current Weather</h3>
+                <div class="input-group">
+                    <input type="text" id="city-current" placeholder="City name (e.g. Bucharest)" value="Bucharest">
+                    <button onclick="getCurrentWeather()">Get Weather</button>
+                </div>
+                <div id="current-weather-result" class="result-box"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>7-Day Forecast</h3>
+                <div class="input-group">
+                    <input type="text" id="city-forecast" placeholder="City name" value="Bucharest">
+                    <button onclick="getWeekForecast()">Get Forecast</button>
+                </div>
+                <div id="forecast-result" class="result-box"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>Hourly Temperature (Next 24h)</h3>
+                <div class="input-group">
+                    <input type="text" id="city-hourly" placeholder="City name" value="Bucharest">
+                    <button onclick="getHourlyTemperature()">Get Hourly Data</button>
+                </div>
+                <div id="hourly-result" class="result-box"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>Air Quality Index</h3>
+                <div class="input-group">
+                    <input type="text" id="city-air" placeholder="City name" value="Bucharest">
+                    <button onclick="getAirQuality()">Check Air Quality</button>
+                </div>
+                <div id="air-quality-result" class="result-box"></div>
+            </div>
+
+            <div class="weather-app-box" style="border-color: gold;">
+                <h3>⭐ BONUS: Random Cat Fact</h3>
+                <div class="input-group">
+                    <button onclick="getCatFact()">Get Cat Fact</button>
+                </div>
+                <div id="cat-fact-result" class="result-box"></div>
+            </div>
+        </section>
+
         <section id="about">
             <h2>About</h2>
             <p>Learn more about what we do.</p>
@@ -38,5 +88,181 @@
     <footer>
         <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
     </footer>
+    <script>
+        // --- 1. HELPER: Geocoding (Transformă oraș în coordonate) ---
+        async function getCoordinates(cityName) {
+            const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`);
+            const data = await response.json();
+
+            if (!data.results || data.results.length === 0) {
+                throw new Error('City not found. Please check the spelling.');
+            }
+
+            return {
+                lat: data.results[0].latitude,
+                lon: data.results[0].longitude,
+                name: data.results[0].name,
+                country: data.results[0].country
+            };
+        }
+
+        // --- 2. HELPER: Weather Codes (Traducere coduri meteo) ---
+        const weatherCodes = {
+            0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
+            45: 'Foggy', 48: 'Depositing rime fog', 51: 'Light drizzle',
+            53: 'Moderate drizzle', 55: 'Dense drizzle', 61: 'Slight rain',
+            63: 'Moderate rain', 65: 'Heavy rain', 71: 'Slight snow',
+            73: 'Moderate snow', 75: 'Heavy snow', 77: 'Snow grains',
+            80: 'Slight rain showers', 81: 'Moderate rain showers', 82: 'Violent rain showers',
+            85: 'Slight snow showers', 86: 'Heavy snow showers', 95: 'Thunderstorm',
+            96: 'Thunderstorm with slight hail', 99: 'Thunderstorm with heavy hail'
+        };
+
+        // --- 3. FUNCȚIA: Current Weather ---
+        async function getCurrentWeather() {
+            const cityName = document.getElementById('city-current').value;
+            const resultDiv = document.getElementById('current-weather-result');
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+
+            try {
+                const location = await getCoordinates(cityName);
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&timezone=auto`);
+                const data = await response.json();
+                const weather = data.current_weather;
+
+                resultDiv.innerHTML = `
+                <div class="weather-data">
+                    <p><strong>Location:</strong> ${location.name}, ${location.country}</p>
+                    <p><strong>Temperature:</strong> ${weather.temperature}°C</p>
+                    <p><strong>Wind Speed:</strong> ${weather.windspeed} km/h</p>
+                    <p><strong>Wind Direction:</strong> ${weather.winddirection}°</p>
+                    <p><strong>Condition:</strong> ${weatherCodes[weather.weathercode] || 'Unknown'}</p>
+                </div>
+            `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // --- 4. FUNCȚIA: 7-Day Forecast ---
+        async function getWeekForecast() {
+            const cityName = document.getElementById('city-forecast').value;
+            const resultDiv = document.getElementById('forecast-result');
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+
+            try {
+                const location = await getCoordinates(cityName);
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto`);
+                const data = await response.json();
+
+                let forecastHTML = `<p style="text-align: center; margin-bottom: 1rem;"><strong>${location.name}, ${location.country}</strong></p>`;
+                forecastHTML += '<div class="forecast-grid" style="display: flex; gap: 10px; overflow-x: auto;">';
+
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(data.daily.time[i]);
+                    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+
+                    forecastHTML += `
+                    <div class="forecast-day" style="border: 1px solid #ddd; padding: 5px; border-radius: 5px; min-width: 80px; text-align: center;">
+                        <p><strong>${dayName}</strong></p>
+                        <p>${data.daily.temperature_2m_max[i]}°C / ${data.daily.temperature_2m_min[i]}°C</p>
+                        <p>${data.daily.precipitation_sum[i]} mm</p>
+                    </div>
+                `;
+                }
+                forecastHTML += '</div>';
+                resultDiv.innerHTML = forecastHTML;
+
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // --- 5. FUNCȚIA: Hourly Temperature ---
+        async function getHourlyTemperature() {
+            const cityName = document.getElementById('city-hourly').value;
+            const resultDiv = document.getElementById('hourly-result');
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+
+            try {
+                const location = await getCoordinates(cityName);
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&hourly=temperature_2m,relative_humidity_2m,precipitation&timezone=auto&forecast_days=1`);
+                const data = await response.json();
+
+                let hourlyHTML = `<p style="text-align: center;"><strong>${location.name}, ${location.country}</strong></p>`;
+                hourlyHTML += '<div class="hourly-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 5px;">';
+
+                for (let i = 0; i < 24; i++) {
+                    const time = new Date(data.hourly.time[i]);
+                    const hour = time.getHours();
+
+                    hourlyHTML += `
+                    <div class="hourly-item" style="border: 1px solid #eee; padding: 2px; text-align: center; font-size: 0.8rem;">
+                        <p><strong>${hour}:00</strong></p>
+                        <p>${data.hourly.temperature_2m[i]}°C</p>
+                        <p>${data.hourly.relative_humidity_2m[i]}%</p>
+                    </div>
+                `;
+                }
+                hourlyHTML += '</div>';
+                resultDiv.innerHTML = hourlyHTML;
+
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // --- 6. FUNCȚIA: Air Quality ---
+        async function getAirQuality() {
+            const cityName = document.getElementById('city-air').value;
+            const resultDiv = document.getElementById('air-quality-result');
+            resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+
+            try {
+                const location = await getCoordinates(cityName);
+                const response = await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${location.lat}&longitude=${location.lon}&current=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,european_aqi&timezone=auto`);
+                const data = await response.json();
+                const current = data.current;
+
+                const aqiLevels = { 1: 'Good', 2: 'Fair', 3: 'Moderate', 4: 'Poor', 5: 'Very Poor' };
+
+                resultDiv.innerHTML = `
+                <div class="weather-data">
+                    <p><strong>Location:</strong> ${location.name}, ${location.country}</p>
+                    <p><strong>European AQI:</strong> ${aqiLevels[current.european_aqi] || current.european_aqi}</p>
+                    <p><strong>PM10:</strong> ${current.pm10} μg/m³</p>
+                    <p><strong>PM2.5:</strong> ${current.pm2_5} μg/m³</p>
+                    <p><strong>NO₂:</strong> ${current.nitrogen_dioxide} μg/m³</p>
+                    <p><strong>O₃:</strong> ${current.ozone} μg/m³</p>
+                </div>
+            `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // --- 7. BONUS: Cat Fact API ---
+        async function getCatFact() {
+            const resultDiv = document.getElementById('cat-fact-result');
+            resultDiv.innerHTML = '<p class="loading">Meowing...</p>';
+
+            try {
+                // Acest API respectă cerințele: No Auth, HTTPS, CORS.
+                const response = await fetch('https://catfact.ninja/fact');
+                const data = await response.json();
+
+                resultDiv.innerHTML = `
+                <div class="weather-data" style="background-color: #fff8e1;">
+                    <p><strong>🐱 Did you know?</strong></p>
+                    <p><em>"${data.fact}"</em></p>
+                </div>
+            `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+
 </body>
+
 </html>
