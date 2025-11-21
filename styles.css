@@ -71,6 +71,15 @@ footer {
 	margin-top: 3rem;
 }
 
+#despre {
+	background-color: #655d5d;
+	padding: 20px;
+	margin-top: 20px;
+	border-radius: 8px;
+}
+#despre h2 {
+	color : #333;
+}
 /* Weather Applications Styling */
 .weather-container {
 	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
