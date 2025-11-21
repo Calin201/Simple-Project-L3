@@ -260,3 +260,32 @@ footer {
 		grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 	}
 }
+.dog-container {
+    background: white;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.dog-container img {
+    max-width: 300px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.dog-container button {
+    background-color: #35424a;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dog-container button:hover {
+    background-color: #e8491d;
+}

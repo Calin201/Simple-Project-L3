@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Simple Webpage</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Dog API Section Styling */
+        .dog-container {
+            background: white;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .dog-container img {
+            max-width: 300px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .dog-container button {
+            background-color: #35424a;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dog-container button:hover {
+            background-color: #e8491d;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -22,6 +54,14 @@
         <section id="home">
             <h2>Home</h2>
             <p>This is a simple webpage created with HTML and CSS.</p>
+        </section>
+        <section class="dog-container" id="dog-api">
+            <h2>Random Dog Image</h2>
+            <button id="load-dog-btn">Get Random Dog</button>
+            <div id="dog-image">
+                <img src="" alt="Random Dog" />
+            </div>
+            <p id="dog-breed"></p>
         </section>
         <section id="weather-apps" class="weather-container">
             <h2>🌦 Open-Meteo Weather Applications</h2>
@@ -98,17 +138,14 @@ admin1: data.results[0].admin1
 const weatherCodes = {
 0: '☀ Clear sky', 1: '🌤 Mainly clear', 2: '⛅ Partly cloudy', 3:
 '☁ Overcast',
-45: '🌫 Foggy', 48: '🌫 Depositing rime fog', 51: '🌦 Light
-drizzle',
-53: '🌦 Moderate drizzle', 55: '🌦 Dense drizzle', 61: '🌧 Slight
-rain',
+45: '🌫 Foggy', 48: '🌫 Depositing rime fog', 51: '🌦 Lightdrizzle',
+53: '🌦 Moderate drizzle', 55: '🌦 Dense drizzle', 61: '🌧 Slightrain',
 63: '🌧 Moderate rain', 65: '🌧 Heavy rain', 71: '🌨 Slight snow',
 73: '🌨 Moderate snow', 75: '🌨 Heavy snow', 77: '❄ Snow grains',
 80: '🌦 Slight rain showers', 81: '🌦 Moderate rain showers',
 82: '🌦 Violent rain showers', 85: '🌨 Slight snow showers',
 86: '🌨 Heavy snow showers', 95: '⛈ Thunderstorm',
-96: '⛈ Thunderstorm with slight hail', 99: '⛈ Thunderstorm with
-heavy hail'
+96: '⛈ Thunderstorm with slight hail', 99: '⛈ Thunderstorm withheavy hail'
 };
 async function getCurrentWeather() {
 // 1. Găsește elementele din DOM
@@ -260,6 +297,30 @@ resultDiv.innerHTML = `<p class"error">❌ Error:
 ${error.message}</p>`;
 }
 }
+    </script>
+      <script>
+        // Function to fetch a random dog image
+        function fetchDogImage() {
+            fetch('https://dog.ceo/api/breeds/image/random')
+                .then(response => response.json())
+                .then(data => {
+                    const dogImageUrl = data.message;
+                    const breed = dogImageUrl.split('/')[4]; // Extract breed from URL
+
+                    // Update the image and breed in the HTML
+                    document.querySelector('#dog-image img').src = dogImageUrl;
+                    document.querySelector('#dog-breed').innerText = `Breed: ${breed}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching the dog image: ', error);
+                });
+        }
+
+        // Event listener for the button to load a new dog image
+        document.getElementById('load-dog-btn').addEventListener('click', fetchDogImage);
+
+        // Automatically load the first dog image when the page loads
+        fetchDogImage();
     </script>
 </body>
 </html>
