@@ -20,6 +20,45 @@
 
     <main>
         <section id="home">
+            <section id="weather-apps" class="weather-container">
+<h2>🌦 Open-Meteo Weather Applications</h2>
+<div class="weather-app-box">
+<h3>📍 Current Weather</h3>
+<div class="input-group">
+<input type="text" id="city-current" placeholder="City name (e.g.,
+Bucharest, London)" value="Bucharest">
+<button onclick="getCurrentWeather()">Get Weather</button>
+</div>
+<div id="current-weather-result" class="result-box"></div>
+</div>
+<div class="weather-app-box">
+<h3>📅 7-Day Forecast</h3>
+<div class="input-group">
+<input type="text" id="city-forecast" placeholder="City name (e.g.,
+Bucharest, London)" value="Bucharest">
+<button onclick="getWeekForecast()">Get Forecast</button>
+</div>
+<div id="forecast-result" class="result-box"></div>
+</div>
+<div class="weather-app-box">
+<h3>🌡 Hourly Temperature (Next 24h)</h3>
+<div class="input-group">
+<input type="text" id="city-hourly" placeholder="City name (e.g.,
+Bucharest, London)" value="Bucharest">
+<button onclick="getHourlyTemperature()">Get Hourly Data</button>
+</div>
+<div id="hourly-result" class="result-box"></div>
+</div>
+<div class="weather-app-box">
+<h3>💨 Air Quality Index</h3>
+<div class="input-group">
+<input type="text" id="city-air" placeholder="City name (e.g., Bucharest,
+London)" value="Bucharest">
+<button onclick="getAirQuality()">Check Air Quality</button>
+</div>
+<div id="air-quality-result" class="result-box"></div>
+</div>
+</section>
             <h2>Home</h2>
             <p>This is a simple webpage created with HTML and CSS.</p>
         </section>
@@ -38,5 +77,17 @@
     <footer>
         <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
     </footer>
+<script>
+    async function getCoordinates(cityName) {
+
+const response = await fetch(`https://geocoding-api.open-
+meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&form
+
+at=json`);
+const data = await response.json();
+if (!data.results || data.results.length === 0) {
+throw new Error('City not found. Please check the spelling.');
+</script>
+
 </body>
 </html>
