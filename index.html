@@ -23,7 +23,45 @@
             <h2>Home</h2>
             <p>This is a simple webpage created with HTML and CSS.</p>
         </section>
-
+        <section id="weather-apps" class="weather-container">
+            <h2>🌦 Open-Meteo Weather Applications</h2>
+            <div class="weather-app-box">
+            <h3>📍 Current Weather</h3>
+            <div class="input-group">
+            <input type="text" id="city-current" placeholder="City name (e.g.,
+            Bucharest, London)" value="Bucharest">
+            <button onclick="getCurrentWeather()">Get Weather</button>
+            </div>
+            <div id="current-weather-result" class="result-box"></div>
+            </div>
+            <div class="weather-app-box">
+            <h3>📅 7-Day Forecast</h3>
+            <div class="input-group">
+            <input type="text" id="city-forecast" placeholder="City name (e.g.,
+            Bucharest, London)" value="Bucharest">
+            <button onclick="getWeekForecast()">Get Forecast</button>
+            </div>
+            <div id="forecast-result" class="result-box"></div>
+            </div>
+            <div class="weather-app-box">
+            <h3>🌡 Hourly Temperature (Next 24h)</h3>
+            <div class="input-group">
+            <input type="text" id="city-hourly" placeholder="City name (e.g.,
+            Bucharest, London)" value="Bucharest">
+            <button onclick="getHourlyTemperature()">Get Hourly Data</button>
+            </div>
+            <div id="hourly-result" class="result-box"></div>
+            </div>
+            <div class="weather-app-box">
+            <h3>💨 Air Quality Index</h3>
+            <div class="input-group">
+            <input type="text" id="city-air" placeholder="City name (e.g., Bucharest,
+            London)" value="Bucharest">
+            <button onclick="getAirQuality()">Check Air Quality</button>
+            </div>
+            <div id="air-quality-result" class="result-box"></div>
+            </div>
+            </section>
         <section id="about">
             <h2>About</h2>
             <p>Learn more about what we do.</p>
@@ -39,4 +77,116 @@
         <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
     </footer>
 </body>
+<footer>
+    <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
+</footer>
+
+<script>
+   async function getCoordinates(cityName) {
+
+const response = await fetch(`https://geocoding-api.open-
+meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&form
+
+at=json`);
+const data = await response.json();
+if (!data.results || data.results.length === 0) {
+throw new Error('City not found. Please check the spelling.'); 
+}
+return {
+lat: data.results[0].latitude,
+lon: data.results[0].longitude,
+name: data.results[0].name,
+country: data.results[0].country,
+admin1: data.results[0].admin1
+};
+}
+const weatherCodes = {
+0: '☀ Clear sky', 1: '🌤 Mainly clear', 2: '⛅ Partly cloudy', 3:
+'☁ Overcast',
+45: '🌫 Foggy', 48: '🌫 Depositing rime fog', 51: '🌦 Lightdrizzle',
+53: '🌦 Moderate drizzle', 55: '🌦 Dense drizzle', 61: '🌧 Slightrain',
+63: '🌧 Moderate rain', 65: '🌧 Heavy rain', 71: '🌨 Slight snow',
+73: '🌨 Moderate snow', 75: '🌨 Heavy snow', 77: '❄ Snow grains',
+80: '🌦 Slight rain showers', 81: '🌦 Moderate rain showers',
+82: '🌦 Violent rain showers', 85: '🌨 Slight snow showers',
+86: '🌨 Heavy snow showers', 95: '⛈ Thunderstorm',
+96: '⛈ Thunderstorm with slight hail', 99: '⛈ Thunderstorm withheavy hail'
+};
+async function getCurrentWeather() {
+// 1. Găsește elementele din DOM
+const cityName = document.getElementById('city-current').value;
+const resultDiv = document.getElementById('current-weather-result');
+// 2. Arată un mesaj de încărcare
+resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+try {
+// 3. Preluare coordonate
+const location = await getCoordinates(cityName);
+// 4. Preluare date meteo
+
+const response = await fetch(`https://api.open-
+meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&current_
+
+weather=true&timezone=auto`);
+const data = await response.json();
+const weather = data.current_weather;
+// 5. Construiește HTML-ul și injectează-l în DOM
+resultDiv.innerHTML = `
+<div class="weather-data">
+<p><strong>📍 Location:</strong> ${location.name},
+${location.country}</p>
+<p><strong>🌡 Temperature:</strong>
+${weather.temperature}°C</p>
+<p><strong>💨 Wind Speed:</strong> ${weather.windspeed}
+km/h</p>
+<p><strong>🧭 Wind Direction:</strong>
+${weather.winddirection}°</p>
+<p><strong>🌤 Condition:</strong>
+${weatherCodes[weather.weathercode] || 'Unknown'}</p>
+<p><strong>🕐 Time:</strong> ${weather.time}</p>
+</div>
+`;
+} catch (error) {
+// 6. Gestionare erori
+resultDiv.innerHTML = `<p class="error">❌ Error:
+${error.message}</p>`;
+}
+}
+async function getWeekForecast() {
+const cityName = document.getElementById('city-forecast').value;
+const resultDiv = document.getElementById('forecast-result');
+resultDiv.innerHTML = '<p class="loading">Loading...</p>';
+try {
+const location = await getCoordinates(cityName);
+
+const response = await fetch(`https://api.open-
+meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&daily=te
+
+mperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto`)
+;
+const data = await response.json();
+let forecastHTML = `<p style="text-align: center; margin-bottom:
+1rem;"><strong>📍 ${location.name}, ${location.country}</strong></p>`;
+forecastHTML += '<div class="forecast-grid">';
+for (let i = 0; i < 7; i++) {
+const date = new Date(data.daily.time[i]);
+const dayName = date.toLocaleDateString('en-US', { weekday:
+'short' });
+forecastHTML += `
+<div class="forecast-day">
+<p><strong>${dayName}</strong></p>
+<p>${date.toLocaleDateString()}</p>
+<p>🌡 ${data.daily.temperature_2m_max[i]}°C /
+${data.daily.temperature_2m_min[i]}°C</p>
+<p>💧 ${data.daily.precipitation_sum[i]} mm</p>
+</div>
+`;
+}
+forecastHTML += '</div>';
+resultDiv.innerHTML = forecastHTML;
+} catch (error) {
+resultDiv.innerHTML = `<p class="error">❌ Error:
+${error.message}</p>`;
+}
+}
+</script>
 </html>
