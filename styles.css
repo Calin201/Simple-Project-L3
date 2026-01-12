@@ -11,6 +11,29 @@ body {
 	color: #333;
 	background-color: #f4f4f4;
 }
+#despre{
+	background-color:#655d5d;
+	padding: 20px;
+	margin-top: 20px;
+	border-radius: 8px;
+}
+#despre h2{
+	color: #333;
+}
+#galerie {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 40px 0;
+    text-align: center;
+}
+
+#galerie img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 header {
 	background: #35424a;
@@ -259,4 +282,7 @@ footer {
 	.hourly-grid {
 		grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 	}
+	#galerie {
+        grid-template-columns: 1fr; /* O singură coloană */
+    }
 }
