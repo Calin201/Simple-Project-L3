@@ -241,8 +241,24 @@ footer {
 	font-size: 0.85rem;
 }
 
+.galerie-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.galerie-grid img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+	.galerie-grid {
+		grid-template-columns: 1fr;
+	}
+
 	.input-group {
 		flex-direction: column;
 	}
