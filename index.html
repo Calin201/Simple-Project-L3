@@ -1,42 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Webpage</title>
+    <meta name="theme-color" content="#effbf8">
+    <title>Ritmuri de apă</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <header>
-        <h1>Welcome to My Page</h1>
-        <nav>
+<body>    <a class="skip-link" href="#main">Sari la conținut</a>
+    <header class="site-header">
+        <a class="wordmark" href="#home" aria-label="Ritmuri de apă, acasă">
+            <span class="wordmark-mark" aria-hidden="true"></span>
+            RITMURI <span>DE APĂ</span>
+        </a>
+        <nav class="site-nav" aria-label="Navigare principală">
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#about">Despre</a></li>
+                <li><a href="#proiect">Proiect</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
-        <section id="home">
-            <h2>Home</h2>
-            <p>This is a simple webpage created with HTML and CSS.</p>
+    <main id="main">
+        <section id="home" class="hero" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <p class="eyebrow"><span></span> JURNAL VIZUAL · 01</p>
+                <h1 id="hero-title">Lasă-te purtat de <em>ritmul apei.</em></h1>
+                <p class="hero-description">O pauză de la agitație, inspirată de culorile și mișcarea mării.</p>
+                <a class="hero-link" href="#proiect">Explorează proiectul <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <figure class="hero-visual">
+                <img src="https://media.giphy.com/media/HGvjR72DXRHWw/giphy.gif" alt="Valuri turcoaz care se mișcă liniștit la mal" width="480" height="540" fetchpriority="high">
+                <figcaption><span>01 / 03</span> Respirația oceanului</figcaption>
+            </figure>
         </section>
 
-        <section id="about">
-            <h2>About</h2>
-            <p>Learn more about what we do.</p>
+        <section id="about" class="about-section" aria-labelledby="about-title">
+            <p class="section-label">01 / DESPRE</p>
+            <div class="about-copy">
+                <h2 id="about-title">Un spațiu pentru un moment de liniște.</h2>
+                <p>Ritmuri de apă aduce aproape atmosfera unei zile la mal: lumină, mișcare și nuanțe proaspete de turcoaz.</p>
+            </div>
         </section>
 
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Get in touch with us!</p>
+        <section id="proiect" class="project-section" aria-labelledby="project-title">
+            <div>
+                <p class="section-label">02 / PROIECT</p>
+                <h2 id="project-title">Inspirat de mare. Creat pentru pauza ta.</h2>
+            </div>
+            <p>Un mic experiment web despre felul în care culoarea și mișcarea pot schimba ritmul unei zile.</p>
+        </section>
+
+        <section id="contact" class="contact-section" aria-labelledby="contact-title">
+            <p class="section-label">03 / CONTACT</p>
+            <div>
+                <h2 id="contact-title">Ai o idee în minte?</h2>
+                <a class="contact-link" href="mailto:alex.mihai@student.usv.ro">Hai să vorbim <span aria-hidden="true">&rarr;</span></a>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
+        <p>RITMURI DE APĂ <span>·</span> Un moment de respiro.</p>
+        <a href="#home">Înapoi sus &uarr;</a>
     </footer>
 </body>
 </html>
