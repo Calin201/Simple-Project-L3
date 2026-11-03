@@ -70,6 +70,12 @@ footer {
 	color: white;
 	margin-top: 3rem;
 }
+#despre {
+	background-color: #e74c3c;
+	padding: auto;
+	margin-top: 50px;
+	border-radius: 20px;
+}
 
 /* Weather Applications Styling */
 .weather-container {
