@@ -69,6 +69,8 @@ footer {
 	background: #35424a;
 	color: white;
 	margin-top: 3rem;
+	bottom: 0;
+	width: 100%;
 }
 
 /* Weather Applications Styling */
