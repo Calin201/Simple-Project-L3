@@ -24,6 +24,46 @@
             <p>This is a simple webpage created with HTML and CSS.</p>
         </section>
 
+        <section id="weather-apps" class="weather-container">
+            <h2>🌦 Open-Meteo Weather Applications</h2>
+
+            <div class="weather-app-box">
+                <h3>📍 Current Weather</h3>
+                <div class="input-group">
+                    <input type="text" id="city-current" aria-label="City for current weather" placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getCurrentWeather()">Get Weather</button>
+                </div>
+                <div id="current-weather-result" class="result-box" aria-live="polite"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>📅 7-Day Forecast</h3>
+                <div class="input-group">
+                    <input type="text" id="city-forecast" aria-label="City for 7-day forecast" placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getWeekForecast()">Get Forecast</button>
+                </div>
+                <div id="forecast-result" class="result-box" aria-live="polite"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>🌡 Hourly Temperature (Next 24h)</h3>
+                <div class="input-group">
+                    <input type="text" id="city-hourly" aria-label="City for hourly forecast" placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getHourlyTemperature()">Get Hourly Data</button>
+                </div>
+                <div id="hourly-result" class="result-box" aria-live="polite"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>💨 Air Quality Index</h3>
+                <div class="input-group">
+                    <input type="text" id="city-air" aria-label="City for air quality" placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getAirQuality()">Check Air Quality</button>
+                </div>
+                <div id="air-quality-result" class="result-box" aria-live="polite"></div>
+            </div>
+        </section>
+
         <section id="about">
             <h2>About</h2>
             <p>Learn more about what we do.</p>
@@ -38,5 +78,224 @@
     <footer>
         <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
     </footer>
+
+    <script>
+        const weatherCodes = {
+            0: '☀ Clear sky',
+            1: '🌤 Mainly clear',
+            2: '⛅ Partly cloudy',
+            3: '☁ Overcast',
+            45: '🌫 Foggy',
+            48: '🌫 Depositing rime fog',
+            51: '🌦 Light drizzle',
+            53: '🌦 Moderate drizzle',
+            55: '🌦 Dense drizzle',
+            61: '🌧 Slight rain',
+            63: '🌧 Moderate rain',
+            65: '🌧 Heavy rain',
+            71: '🌨 Slight snow',
+            73: '🌨 Moderate snow',
+            75: '🌨 Heavy snow',
+            77: '❄ Snow grains',
+            80: '🌦 Slight rain showers',
+            81: '🌦 Moderate rain showers',
+            82: '🌦 Violent rain showers',
+            85: '🌨 Slight snow showers',
+            86: '🌨 Heavy snow showers',
+            95: '⛈ Thunderstorm',
+            96: '⛈ Thunderstorm with slight hail',
+            99: '⛈ Thunderstorm with heavy hail'
+        };
+
+        async function fetchJson(url) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Weather service returned ${response.status}.`);
+            }
+            return response.json();
+        }
+
+        async function getCoordinates(cityName) {
+            const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
+            url.search = new URLSearchParams({
+                name: cityName,
+                count: '1',
+                language: 'en',
+                format: 'json'
+            });
+
+            const data = await fetchJson(url);
+            if (!data.results || data.results.length === 0) {
+                throw new Error('City not found. Please check the spelling.');
+            }
+
+            const result = data.results[0];
+            return {
+                latitude: result.latitude,
+                longitude: result.longitude,
+                name: result.name,
+                country: result.country
+            };
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
+        function createForecastUrl(location, parameters) {
+            const url = new URL('https://api.open-meteo.com/v1/forecast');
+            url.search = new URLSearchParams({
+                latitude: location.latitude,
+                longitude: location.longitude,
+                timezone: 'auto',
+                ...parameters
+            });
+            return url;
+        }
+
+        async function showWeather(inputId, resultId, renderResult) {
+            const cityName = document.getElementById(inputId).value.trim();
+            const resultElement = document.getElementById(resultId);
+            resultElement.innerHTML = '<p class="loading">Loading...</p>';
+
+            try {
+                if (!cityName) {
+                    throw new Error('Please enter a city name.');
+                }
+
+                const location = await getCoordinates(cityName);
+                resultElement.innerHTML = await renderResult(location);
+            } catch (error) {
+                resultElement.innerHTML = `<p class="error">❌ Error: ${escapeHtml(error.message)}</p>`;
+            }
+        }
+
+        function locationLabel(location) {
+            return `${escapeHtml(location.name)}, ${escapeHtml(location.country)}`;
+        }
+
+        async function getCurrentWeather() {
+            await showWeather('city-current', 'current-weather-result', async (location) => {
+                const url = createForecastUrl(location, {
+                    current: 'temperature_2m,wind_speed_10m,wind_direction_10m,weather_code'
+                });
+                const data = await fetchJson(url);
+                const weather = data.current;
+                if (!weather) {
+                    throw new Error('Current weather data is unavailable.');
+                }
+
+                return `
+                    <div class="weather-data">
+                        <p><strong>📍 Location:</strong> ${locationLabel(location)}</p>
+                        <p><strong>🌡 Temperature:</strong> ${weather.temperature_2m}°C</p>
+                        <p><strong>💨 Wind Speed:</strong> ${weather.wind_speed_10m} km/h</p>
+                        <p><strong>🧭 Wind Direction:</strong> ${weather.wind_direction_10m}°</p>
+                        <p><strong>🌤 Condition:</strong> ${weatherCodes[weather.weather_code] || 'Unknown'}</p>
+                        <p><strong>🕐 Time:</strong> ${escapeHtml(weather.time)}</p>
+                    </div>`;
+            });
+        }
+
+        async function getWeekForecast() {
+            await showWeather('city-forecast', 'forecast-result', async (location) => {
+                const url = createForecastUrl(location, {
+                    daily: 'temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code',
+                    forecast_days: '7'
+                });
+                const data = await fetchJson(url);
+                if (!data.daily?.time?.length) {
+                    throw new Error('Forecast data is unavailable.');
+                }
+
+                const forecast = data.daily;
+                const days = forecast.time.map((day, index) => {
+                    const date = new Date(`${day}T00:00:00`);
+                    return `
+                        <div class="forecast-day">
+                            <p><strong>${date.toLocaleDateString('en-US', { weekday: 'short' })}</strong></p>
+                            <p>${date.toLocaleDateString('en-US')}</p>
+                            <p>${weatherCodes[forecast.weather_code[index]] || 'Unknown'}</p>
+                            <p>🌡 ${forecast.temperature_2m_max[index]}°C / ${forecast.temperature_2m_min[index]}°C</p>
+                            <p>💧 ${forecast.precipitation_sum[index]} mm</p>
+                        </div>`;
+                }).join('');
+
+                return `
+                    <p><strong>📍 ${locationLabel(location)}</strong></p>
+                    <div class="forecast-grid">${days}</div>`;
+            });
+        }
+
+        async function getHourlyTemperature() {
+            await showWeather('city-hourly', 'hourly-result', async (location) => {
+                const url = createForecastUrl(location, {
+                    hourly: 'temperature_2m,relative_humidity_2m,precipitation',
+                    forecast_days: '1'
+                });
+                const data = await fetchJson(url);
+                if (!data.hourly?.time?.length) {
+                    throw new Error('Hourly forecast data is unavailable.');
+                }
+
+                const hourly = data.hourly;
+                const hours = hourly.time.map((time, index) => `
+                    <div class="hourly-item">
+                        <p><strong>${escapeHtml(time.slice(11, 16))}</strong></p>
+                        <p>🌡 ${hourly.temperature_2m[index]}°C</p>
+                        <p>💧 ${hourly.relative_humidity_2m[index]}%</p>
+                        <p>🌧 ${hourly.precipitation[index]} mm</p>
+                    </div>`).join('');
+
+                return `
+                    <p><strong>📍 ${locationLabel(location)}</strong></p>
+                    <div class="hourly-grid">${hours}</div>`;
+            });
+        }
+
+        function getAqiDescription(value) {
+            if (value <= 20) return 'Good';
+            if (value <= 40) return 'Fair';
+            if (value <= 60) return 'Moderate';
+            if (value <= 80) return 'Poor';
+            if (value <= 100) return 'Very Poor';
+            return 'Extremely Poor';
+        }
+
+        async function getAirQuality() {
+            await showWeather('city-air', 'air-quality-result', async (location) => {
+                const url = new URL('https://air-quality-api.open-meteo.com/v1/air-quality');
+                url.search = new URLSearchParams({
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    current: 'pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone,european_aqi',
+                    timezone: 'auto'
+                });
+                const data = await fetchJson(url);
+                const current = data.current;
+                if (!current) {
+                    throw new Error('Air quality data is unavailable.');
+                }
+
+                return `
+                    <div class="weather-data">
+                        <p><strong>📍 Location:</strong> ${locationLabel(location)}</p>
+                        <p><strong>European AQI:</strong> ${current.european_aqi} (${getAqiDescription(current.european_aqi)})</p>
+                        <p><strong>PM10:</strong> ${current.pm10} μg/m³</p>
+                        <p><strong>PM2.5:</strong> ${current.pm2_5} μg/m³</p>
+                        <p><strong>CO:</strong> ${current.carbon_monoxide} μg/m³</p>
+                        <p><strong>NO2:</strong> ${current.nitrogen_dioxide} μg/m³</p>
+                        <p><strong>SO2:</strong> ${current.sulphur_dioxide} μg/m³</p>
+                        <p><strong>O3:</strong> ${current.ozone} μg/m³</p>
+                    </div>`;
+            });
+        }
+    </script>
 </body>
 </html>
