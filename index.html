@@ -77,6 +77,24 @@
                 <div id="air-quality-result" class="result-box" aria-live="polite"></div>
             </div>
         </section>
+
+        <section id="bonus-api">
+            <h2>Bonus: Random Dog 🐶</h2>
+            <div class="weather-app-box">
+                <p>Load a random dog photo using the free Dog CEO API.</p>
+                <div class="input-group">
+                    <button type="button" onclick="getRandomDog()">Show a random dog</button>
+                </div>
+                <div id="dog-result" class="result-box" aria-live="polite">
+                    <p>Select the button to load a photo.</p>
+                </div>
+                <p>
+                    API:
+                    <a href="https://dog.ceo/dog-api/" target="_blank" rel="noopener noreferrer">Dog CEO</a>
+                    (no authorization, HTTPS, CORS enabled).
+                </p>
+            </div>
+        </section>
     </main>
 
     <footer>
