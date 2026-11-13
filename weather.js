@@ -234,30 +234,3 @@ async function getAirQuality() {
         </div>`;
     });
 }
-
-async function getRandomDog() {
-    const result = getResultElement("dog-result");
-    result.className = "result-box loading";
-    result.textContent = "Loading a dog photo...";
-
-    try {
-        const data = await fetchJson("https://dog.ceo/api/breeds/image/random");
-        const imageUrl = new URL(data.message);
-        if (data.status !== "success" || imageUrl.protocol !== "https:" || imageUrl.hostname !== "images.dog.ceo") {
-            throw new Error("The dog image service returned an invalid response.");
-        }
-
-        const image = document.createElement("img");
-        image.className = "dog-image";
-        image.src = imageUrl.href;
-        image.alt = "Random dog";
-        image.addEventListener("error", () => {
-            showError("dog-result", "The dog photo could not be loaded. Please try again.");
-        }, { once: true });
-
-        result.className = "result-box";
-        result.replaceChildren(image);
-    } catch (error) {
-        showError("dog-result", error.message || "Unable to load a dog photo. Please try again.");
-    }
-}
