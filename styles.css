@@ -68,7 +68,20 @@ footer {
 	padding: 1rem 0;
 	background: #35424a;
 	color: white;
+	position: fixed;
+	bottom: 0;
 	margin-top: 3rem;
+}
+
+#despre {
+	background-color:#37acdd;
+	padding: 20px;
+	margin-top: 20px;
+	border-radius: 8px;
+}
+
+#despre h2 {
+	color:#badbad;
 }
 
 /* Weather Applications Styling */
