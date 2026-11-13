@@ -301,3 +301,25 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+#joke-result {
+    white-space: pre-line;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+#bonus-api button {
+    background-color: #16a085;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#bonus-api button:hover {
+    background-color: #138d75;
+}
