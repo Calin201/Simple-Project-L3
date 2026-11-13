@@ -14,6 +14,8 @@
         <nav>
             <ul>
                 <li><a href="#home">Home</a></li>
+                <li><a href="#weather-apps">Weather</a></li>
+                <li><a href="#bonus-api">HTTP Cat</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -63,6 +65,17 @@ London)" value="Bucharest">
                     <button onclick="getAirQuality()">Check Air Quality</button>
                 </div>
                 <div id="air-quality-result" class="result-box"></div>
+            </div>
+        </section>
+        <section id="bonus-api" class="weather-container">
+            <h2>🐱 HTTP Cat Status API (Bonus)</h2>
+            <div class="weather-app-box">
+                <h3>🔍 Caută un cod de stare HTTP</h3>
+                <div class="input-group">
+                    <input type="number" id="http-code" placeholder="Ex: 200, 404, 418, 500" value="404">
+                    <button onclick="getHttpCat()">Vezi Pisica</button>
+                </div>
+                <div id="http-cat-result" class="result-box" style="text-align: center;"></div>
             </div>
         </section>
         <section id="about">
@@ -262,6 +275,29 @@ ${aqiLevels[current.european_aqi] || current.european_aqi}</p>
                 resultDiv.innerHTML = `<p class"error">❌ Error:
 ${error.message}</p>`;
             }
+        }
+        function getHttpCat() {
+            const code = document.getElementById('http-code').value.trim();
+            const resultDiv = document.getElementById('http-cat-result');
+
+            if (!code) {
+                resultDiv.innerHTML = '<p class="error">❌ Te rog introdu un cod HTTP valid (ex: 200, 404).</p>';
+                return;
+            }
+
+            resultDiv.innerHTML = '<p class="loading">Se încarcă pisica...</p>';
+
+            const imageUrl = `https://http.cat/${code}.jpg`;
+
+            resultDiv.innerHTML = `
+                <div class="weather-data">
+                    <p><strong>Cod HTTP:</strong> ${code}</p>
+                    <img src="${imageUrl}" 
+                         alt="HTTP Cat ${code}" 
+                         style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;"
+                         onerror="this.parentElement.innerHTML='<p class=\\'error\\'>❌ Nu există o pisică pentru codul ${code}. Încearcă 200, 404, 418 sau 500!</p>'">
+                </div>
+            `;
         }
     </script>
 </body>
