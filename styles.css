@@ -260,3 +260,20 @@ footer {
 		grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 	}
 }
+#galerie .galerie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+#galerie .galerie-grid img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+@media (max-width: 600px) {
+    #galerie .galerie-grid {
+        grid-template-columns: 1fr;
+    }
+}
