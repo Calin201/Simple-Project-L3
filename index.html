@@ -33,10 +33,55 @@
             <h2>Contact</h2>
             <p>Get in touch with us!</p>
         </section>
+
+        <section id="weather-apps" class="weather-container">
+            <h2>🌥️ Open-Meteo Weather Applications</h2>
+
+            <div class="weather-app-box">
+                <h3>🌡️ Current Weather</h3>
+                <div class="input-group">
+                    <input type="text" id="city-current" aria-label="City for current weather"
+                        placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getCurrentWeather()">Get Weather</button>
+                </div>
+                <div id="current-weather-result" class="result-box" aria-live="polite"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>🗓️ 7-Day Forecast</h3>
+                <div class="input-group">
+                    <input type="text" id="city-forecast" aria-label="City for the 7-day forecast"
+                        placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getWeekForecast()">Get Forecast</button>
+                </div>
+                <div id="forecast-result" class="result-box" aria-live="polite"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>🌡️ Hourly Temperature (Next 24h)</h3>
+                <div class="input-group">
+                    <input type="text" id="city-hourly" aria-label="City for hourly temperatures"
+                        placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getHourlyTemperature()">Get Hourly Data</button>
+                </div>
+                <div id="hourly-result" class="result-box" aria-live="polite"></div>
+            </div>
+
+            <div class="weather-app-box">
+                <h3>🌫️ Air Quality Index</h3>
+                <div class="input-group">
+                    <input type="text" id="city-air" aria-label="City for air quality"
+                        placeholder="City name (e.g., Bucharest, London)" value="Bucharest">
+                    <button type="button" onclick="getAirQuality()">Check Air Quality</button>
+                </div>
+                <div id="air-quality-result" class="result-box" aria-live="polite"></div>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
     </footer>
+    <script src="weather.js"></script>
 </body>
 </html>
