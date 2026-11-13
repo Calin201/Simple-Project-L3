@@ -156,6 +156,24 @@ footer {
 	margin-top: 1rem;
 }
 
+.cat-image {
+	display: block;
+	width: min(100%, 520px);
+	max-height: 420px;
+	margin: 0 auto;
+	object-fit: contain;
+	border-radius: 8px;
+}
+
+.dog-image {
+	display: block;
+	width: min(100%, 520px);
+	max-height: 420px;
+	margin: 0 auto;
+	object-fit: contain;
+	border-radius: 8px;
+}
+
 .weather-data {
 	background: #f8f9fa;
 	padding: 1rem;
