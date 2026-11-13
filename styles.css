@@ -67,10 +67,15 @@ footer {
 	text-align: center;
 	padding: 1rem 0;
 	background: #35424a;
-	color: white;
+	color: rgb(4, 18, 211);
 	margin-top: 3rem;
 }
-
+#about {
+	background-color: #667eea;
+	padding: 20px;
+	margin-top: 20 px;
+	border-radius: 9px;
+}
 /* Weather Applications Styling */
 .weather-container {
 	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
