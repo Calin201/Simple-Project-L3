@@ -71,6 +71,41 @@ footer {
 	margin-top: 3rem;
 }
 
+#despre
+{
+	background-color: #655d5d;
+	padding:20px;
+	margin-top:20px;
+	border-radius:8px;
+}
+
+#despre h2
+{
+	color: #333;
+}
+
+#galerie {
+    padding: 2rem;
+}
+
+#galerie h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+#galerie .galerie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+#galerie img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    object-fit: cover;
+}
 /* Weather Applications Styling */
 .weather-container {
 	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -259,4 +294,32 @@ footer {
 	.hourly-grid {
 		grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 	}
+}
+@media (max-width: 600px) 
+{
+    #galerie .galerie-grid {
+        grid-template-columns: 1fr;
+    }
+}
+#joke-result {
+    white-space: pre-line;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+#bonus-api button {
+    background-color: #16a085;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#bonus-api button:hover {
+    background-color: #138d75;
 }
