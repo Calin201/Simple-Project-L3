@@ -124,6 +124,54 @@
 
         </section>
 
+<!-- BONUS: HTTP DOG API -->
+
+<section id="api-bonus" class="api-bonus">
+
+    <h2>🐶 Bonus: HTTP Dog API</h2>
+
+    <p>
+        HTTP Dog provides a dog image for each HTTP status code.
+    </p>
+
+    <div class="api-container">
+
+        <div class="api-row">
+            <span>No authorization</span>
+            <span class="api-status">✓</span>
+        </div>
+
+        <div class="api-row">
+            <span>HTTPS available</span>
+            <span class="api-status">✓</span>
+        </div>
+
+        <div class="api-row">
+            <span>CORS available</span>
+            <span class="api-status">✓</span>
+        </div>
+
+    </div>
+
+    <h3>🐕 Try HTTP Status Codes</h3>
+
+    <div class="input-group">
+        <input
+            type="number"
+            id="dog-code"
+            placeholder="Enter HTTP code (e.g. 200)"
+            value="200"
+        >
+
+        <button onclick="showDog()">
+            Show Dog
+        </button>
+    </div>
+
+    <div id="dog-result" class="result-box"></div>
+
+</section>
+
         <section id="about">
             <h2>About</h2>
             <p>
@@ -136,7 +184,7 @@
             <h2>Contact</h2>
             <p>Thank you for visiting my website!</p>
         </section>
-
+    
     </main>
 
     <footer>
@@ -605,7 +653,30 @@
             }
         
         }
-        
+            
+
+
+    
+    function showDog() {
+        const code = document.getElementById("dog-code").value;
+        const result = document.getElementById("dog-result");
+
+        if (!/^[1-5][0-9]{2}$/.test(code)) {
+            result.innerHTML = '<p class="error">Invalid HTTP code!</p>';
+            return;
+        }
+
+        result.innerHTML = `
+            <p>🐶 HTTP Status Code: ${code}</p>
+            <img src="https://http.dog/${code}.jpg"
+                 alt="Dog for HTTP status ${code}"
+                 style="max-width:350px;width:100%;">
+        `;
+    }
+
+</script>
+</body>
+</html>
         </script>
         
 </body>
