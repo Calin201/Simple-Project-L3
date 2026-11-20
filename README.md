@@ -1,30 +1,13 @@
-# Simple Webpage
+# Proiect Web: Secțiunea Galerie
 
-A clean and modern HTML/CSS webpage with a responsive design.
+Acest proiect demonstrează crearea unei secțiuni de tip galerie foto responsive, realizată cu ajutorul HTML5 și CSS Grid.
 
-## Features
+## Structura proiectului
 
-- Responsive navigation header
-- Three main sections (Home, About, Contact)
-- Fixed footer
-- Modern styling with hover effects
-- Clean typography and layout
+* `index.html` — structura principală a paginii web, care include secțiunea `#despre` și noua secțiune `#galerie` cu 3 imagini.
+* `style.css` — fișierul de stilizare care folosește CSS Grid pentru afișarea pe 3 coloane (cu spațiu de `1rem` între imagini) și o regulă `@media` pentru a afișa imaginile pe o singură coloană pe ecrane mai mici de `600px`.
 
-## Files
+## Tehnologii utilizate
 
-- `index.html` - Main HTML structure
-- `styles.css` - Stylesheet with all the styling
-
-## How to Use
-
-1. Open `index.html` in your web browser
-2. Navigate between sections using the header links
-
-## Technologies
-
-- HTML5
-- CSS3
-
----
-
-© 2025 My Simple Webpage
+* **HTML5** (tag-uri semantice `<main>`, `<section>`)
+* **CSS3** (CSS Grid, Media Queries)
