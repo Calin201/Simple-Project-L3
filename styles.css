@@ -71,6 +71,29 @@ footer {
 	margin-top: 3rem;
 }
 
+#galerie {
+    padding: 2rem 0;
+}
+
+#galerie .galerie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+#galerie img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+@media (max-width: 600px) {
+    #galerie .galerie-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Weather Applications Styling */
 .weather-container {
 	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
