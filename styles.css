@@ -71,6 +71,33 @@ footer {
 	margin-top: 3rem;
 }
 
+#galerie {
+    padding: 2rem 0;
+}
+
+#galerie h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+#galerie .galerie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+#galerie img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    object-fit: cover;
+}
+@media (max-width: 600px) {
+    #galerie .galerie-grid {
+        grid-template-columns: 1fr;
+    }
+}
 /* Weather Applications Styling */
 .weather-container {
 	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -259,4 +286,15 @@ footer {
 	.hourly-grid {
 		grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
 	}
+}
+/* Sectiunea Despre Mine */
+#despre {
+    background-color: #655d5d;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+#despre h2 {
+    color: white;
 }

@@ -1,30 +1,37 @@
 # Simple Webpage
 
-A clean and modern HTML/CSS webpage with a responsive design.
+A simple and modern webpage built with HTML5 and CSS3, featuring a responsive layout.
 
 ## Features
 
-- Responsive navigation header
-- Three main sections (Home, About, Contact)
-- Fixed footer
-- Modern styling with hover effects
-- Clean typography and layout
+- Navigation header with links
+- Home section
+- Photo gallery with three placeholder images
+- Responsive photo gallery using CSS Grid
+- About section
+- Contact section
+- Modern styling and clean layout
 
-## Files
+## Project Files
 
-- `index.html` - Main HTML structure
-- `styles.css` - Stylesheet with all the styling
+- `index.html` – Main HTML structure
+- `styles.css` – Styling and responsive layout
+- `README.md` – Project documentation
 
-## How to Use
+## Photo Gallery
 
-1. Open `index.html` in your web browser
-2. Navigate between sections using the header links
+The gallery contains three images arranged in a three-column CSS Grid layout. On screens smaller than 600px, the gallery changes to a single column.
 
 ## Technologies
 
 - HTML5
 - CSS3
+- CSS Grid
+- Responsive Web Design
 
----
+## How to Use
 
-© 2025 My Simple Webpage
+1. Open `index.html` in a web browser.
+2. Navigate through the page using the navigation links.
+3. Explore the photo gallery.
+
