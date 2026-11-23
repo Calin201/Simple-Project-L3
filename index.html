@@ -1,42 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Webpage</title>
+    <meta name="description" content="Florin Radasanu - student FIESC. Viziteaza radasanuf.com">
+    <title>Florin Radasanu | radasanuf.com</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Page</h1>
+
+    <header class="site-header">
+        <span class="logo">Florin<span>.</span></span>
         <nav>
             <ul>
                 <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about">Despre mine</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="home">
-            <h2>Home</h2>
-            <p>This is a simple webpage created with HTML and CSS.</p>
+        <section id="home" class="hero">
+            <p class="eyebrow">Laborator INa</p>
+            <h1>Salut, sunt <span class="gradient-text">Florin</span>.</h1>
+            <p class="lead">Totul despre mine il gasesti pe site-ul meu. Apasa butonul:</p>
+
+            <a href="https://radasanuf.com" class="big-button" target="_blank" rel="noopener">
+                <span class="big-button-glow" aria-hidden="true"></span>
+                <span class="big-button-content">
+                    <span class="big-button-label">Viziteaza</span>
+                    <span class="big-button-domain">radasanuf.com</span>
+                </span>
+                <span class="big-button-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a href="#about" class="scroll-hint">Despre mine &darr;</a>
         </section>
 
-        <section id="about">
-            <h2>About</h2>
-            <p>Learn more about what we do.</p>
-        </section>
-
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Get in touch with us!</p>
+        <section id="about" class="card">
+            <h2>Despre mine</h2>
+            <p>Sunt student FIESC.</p>
+            <div class="about-grid">
+                <div class="about-item">
+                    <span class="about-label">Facultate</span>
+                    <span class="about-value">FIESC</span>
+                </div>
+                <div class="about-item">
+                    <span class="about-label">Site personal</span>
+                    <a class="about-value" href="https://radasanuf.com" target="_blank" rel="noopener">radasanuf.com</a>
+                </div>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 My Simple Webpage. All rights reserved.</p>
+        <p>&copy; 2026 Florin Radasanu &middot; <a href="https://radasanuf.com" target="_blank" rel="noopener">radasanuf.com</a></p>
     </footer>
 </body>
 </html>
