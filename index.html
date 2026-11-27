@@ -67,6 +67,31 @@
     </div>
 </section>
 
+
+<section id="dog-app" class="weather-container">
+    <h2>🐶 Random Dog Generator</h2>
+
+    <div class="weather-app-box">
+        <h3>Meet a cute dog!</h3>
+
+        <button onclick="getRandomDog()">
+            Show me a dog 🐾
+        </button>
+
+        <div id="dog-result" class="result-box">
+            <p>Press the button to see a dog!</p>
+        
+            <img
+                id="dog-image"
+                src=""
+                alt="Random cute dog"
+                style="max-width: 100%; width: 400px; border-radius: 15px; display: none; margin-top: 15px;"
+            >
+        </div>
+    </div>
+</section>
+
+
     <main>
         <section id="home">
             <h2>Home</h2>
@@ -293,7 +318,124 @@ async function getAirQuality() {
     }
 }
 
+function getRandomDog() {
+    const dogImage = document.getElementById('dog-image');
+
+    dogImage.src = 'https://dogapi.dog/api/v2/breeds/image?size=large';
+
+    dogImage.style.display = 'block';
+}
+
+
 
 </script>
+
+
+    <!-- GENERATOR DE FOTBALISTI -->
+    <section class="generator-fotbalisti">
+
+        <h2>⚽ Generator de fotbaliști</h2>
+
+        <div id="fotbalist-card">
+
+            <h3 id="fotbalist-nume">Apasă butonul!</h3>
+
+            <p>🌍 Țara: <span id="fotbalist-tara">---</span></p>
+
+            <p>🏆 Echipa: <span id="fotbalist-echipa">---</span></p>
+
+            <p>⚽ Poziția: <span id="fotbalist-pozitie">---</span></p>
+
+        </div>
+
+        <button onclick="genereazaFotbalist()">
+            Generează fotbalist
+        </button>
+
+    </section>
+
+
+    <style>
+
+        .generator-fotbalisti {
+            text-align: center;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 15px;
+            background: #e8f5e9;
+            color: #1b5e20;
+        }
+
+        .generator-fotbalisti h2 {
+            font-size: 25px;
+        }
+
+        #fotbalist-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px auto;
+            max-width: 300px;
+            box-shadow: 0 3px 10px #0002;
+        }
+
+        .generator-fotbalisti button {
+            background: #1b8f3a;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .generator-fotbalisti button:hover {
+            background: #126b2a;
+        }
+
+    </style>
+
+
+    <script>
+
+        const fotbalisti = [
+
+            ["Cristiano Ronaldo", "Portugalia", "Al Nassr", "Atacant"],
+            ["Lionel Messi", "Argentina", "Inter Miami", "Atacant"],
+            ["Kylian Mbappé", "Franța", "Real Madrid", "Atacant"],
+            ["Erling Haaland", "Norvegia", "Manchester City", "Atacant"],
+            ["Lamine Yamal", "Spania", "Barcelona", "Extremă"],
+            ["Vinícius Júnior", "Brazilia", "Real Madrid", "Extremă"],
+            ["Jude Bellingham", "Anglia", "Real Madrid", "Mijlocaș"],
+            ["Kevin De Bruyne", "Belgia", "Napoli", "Mijlocaș"],
+            ["Mohamed Salah", "Egipt", "Liverpool", "Extremă"],
+            ["Harry Kane", "Anglia", "Bayern München", "Atacant"],
+            ["Virgil van Dijk", "Olanda", "Liverpool", "Fundaș"],
+            ["Manuel Neuer", "Germania", "Bayern München", "Portar"],
+            ["Robert Lewandowski", "Polonia", "Barcelona", "Atacant"],
+            ["Neymar Jr.", "Brazilia", "Santos", "Atacant"],
+            ["Bukayo Saka", "Anglia", "Arsenal", "Extremă"]
+
+        ];
+
+
+        function genereazaFotbalist() {
+
+            const index = Math.floor(Math.random() * fotbalisti.length);
+
+            const fotbalist = fotbalisti[index];
+
+            document.getElementById("fotbalist-nume").textContent = fotbalist[0];
+
+            document.getElementById("fotbalist-tara").textContent = fotbalist[1];
+
+            document.getElementById("fotbalist-echipa").textContent = fotbalist[2];
+
+            document.getElementById("fotbalist-pozitie").textContent = fotbalist[3];
+
+        }
+
+    </script>
+
 </body>
 </html>
