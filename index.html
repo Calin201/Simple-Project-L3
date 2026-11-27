@@ -57,6 +57,49 @@
 </div>
 <div id="air-quality-result" class="result-box"></div>
 </div>
+
+<section>
+    <title>Generator Imagini Câini</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #f4f4f9;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .image-container {
+      margin-top: 25px;
+    }
+    img {
+      max-width: 90%;
+      max-height: 450px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+  </style>
+
+ <button id="btnCaine">Arată alt câine</button>
+
+  <!-- Zona în care se încarcă imaginea -->
+  <div class="image-container">
+    <img id="pozaCaine" src="https://dogapi.dog/api/v2/breeds/image" alt="Imagine aleatorie cu un câine">
+  </div>
+
+</section>
+
 </section>
         <section id="about">
             <h2>About</h2>
@@ -222,6 +265,37 @@ resultDiv.innerHTML = `<p class"error">❌ Error:
 ${error.message}</p>`;
 }
 }
+
+//API pentru imagine caine https://dogapi.dog/docs/api-v2#endpoints
+const buton = document.getElementById('btnCaine');
+    const imagine = document.getElementById('pozaCaine');
+
+    buton.addEventListener('click', async () => {
+      // Dezactivăm butonul cât timp se descarcă poza nouă
+      buton.disabled = true;
+      buton.textContent = 'Se încarcă...';
+
+      try {
+        // Cerem o poză nouă fără cache, păstrând URL-ul curat
+        const raspuns = await fetch('https://dogapi.dog', {
+          cache: 'no-store'
+        });
+        
+        // Transformăm răspunsul într-o imagine afișabilă
+        const blob = await raspuns.blob();
+        const urlNou = URL.createObjectURL(blob);
+        
+        imagine.src = urlNou;
+      } catch (eroare) {
+        console.error('Eroare la încărcarea imaginii:', eroare);
+        alert('Nu s-a putut încărca o imagine nouă. Încearcă din nou.');
+      } finally {
+        // Reactivăm butonul
+        buton.disabled = false;
+        buton.textContent = 'Arată alt câine';
+      }
+    });
+
  </script>
 </body>
 </html>
