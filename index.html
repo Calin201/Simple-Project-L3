@@ -179,20 +179,20 @@ async function getHourlyTemperature() {
                 <p>🌡 ${data.hourly.temperature_2m[i]}°C</p>
                 <p>💧 ${data.hourly.relative_humidity_2m[i]}%</p>
                 <p>🌧 ${data.hourly.precipitation[i]} mm</p>
-</div>
-`;
-}
-hourlyHTML += '</div>';
-resultDiv.innerHTML = hourlyHTML;
-} catch (error) {
-resultDiv.innerHTML = `<p class="error">❌ Error:${error.message}</p>`;
-}
+            </div>
+        `;
+            }
+                hourlyHTML += '</div>';
+                resultDiv.innerHTML = hourlyHTML;
+        }   catch (error) {
+            resultDiv.innerHTML = `<p class="error">❌ Error:${error.message}</p>`;
+        }
 }
 async function getAirQuality() {
     const cityName = document.getElementById('city-air').value;
     const resultDiv = document.getElementById('air-quality-result');
     resultDiv.innerHTML = '<p class="loading">Loading...</p>';
-    
+
     try {
         const location = await getCoordinates(cityName);
 
