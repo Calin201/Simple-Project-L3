@@ -71,6 +71,36 @@
             <h2>Contact</h2>
             <p>Get in touch with us!</p>
         </section>
+        <section id="http-cats" class="cats-container">
+            <h2>🐱 HTTP Cats – Cats and HTTP Status Codes</h2>
+            <p>Discover funny cats representing HTTP status codes!</p>
+        
+            <div class="cat-controls">
+                <select id="cat-code">
+                    <option value="200">200 - OK</option>
+                    <option value="301">301 - Moved Permanently</option>
+                    <option value="400">400 - Bad Request</option>
+                    <option value="401">401 - Unauthorized</option>
+                    <option value="403">403 - Forbidden</option>
+                    <option value="404">404 - Not Found</option>
+                    <option value="418">418 - I'm a teapot</option>
+                    <option value="429">429 - Too Many Requests</option>
+                    <option value="500">500 - Internal Server Error</option>
+                    <option value="502">502 - Bad Gateway</option>
+                    <option value="503">503 - Service Unavailable</option>
+                </select>
+        
+                <button onclick="showCat()">Show Cat 🐾</button>
+            </div>
+        
+            <div id="cat-result" class="cat-result">
+                <h3>Choose an HTTP status code!</h3>
+                <img src="https://http.cat/200"
+                     alt="HTTP Cat 200"
+                     width="400">
+            </div>
+        </section>
+        
     </main>
 
     <footer>
@@ -322,6 +352,22 @@ ${error.message}</p>`;
 }
 }
 
+function showCat() {
+    const code = document.getElementById('cat-code').value;
+    const resultDiv = document.getElementById('cat-result');
+
+    resultDiv.innerHTML = `
+        <h3>HTTP Status Code: ${code}</h3>
+        <img
+            src="https://http.cat/${code}"
+            alt="Cat representing HTTP status ${code}"
+            style="max-width: 100%; width: 400px; border-radius: 15px;"
+        >
+        <p>🐱 HTTP ${code} Cat</p>
+    `;
+}
+
    </script>
+   
 </body>
 </html>
