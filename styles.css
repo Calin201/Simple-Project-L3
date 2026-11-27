@@ -73,7 +73,7 @@ footer {
 
 /* Weather Applications Styling */
 .weather-container {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	background: linear-gradient(135deg, #667eea 0%, #a2a04b 100%);
 	color: white;
 	padding: 2rem;
 	border-radius: 15px;
@@ -88,13 +88,15 @@ footer {
 }
 
 .weather-app-box {
-	background: rgba(255, 255, 255, 0.95);
-	color: #333;
-	padding: 1.5rem;
-	margin: 1.5rem 0;
-	border-radius: 10px;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 10px;
+    border: 3px solid #0057b7;
+    outline: 2px solid #ffd700;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .weather-app-box:hover {
@@ -103,7 +105,7 @@ footer {
 }
 
 .weather-app-box h3 {
-	color: #667eea;
+	color: #e8ea66;
 	margin-bottom: 1rem;
 	font-size: 1.3rem;
 }
